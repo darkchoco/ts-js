@@ -1,0 +1,1 @@
+{"version":3,"file":"mongodb-connection.js","sourceRoot":"","sources":["mongodb-connection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,SAAS,CAAC;AAEtC,MAAM,GAAG,GAAG,2CAA2C,CAAC;AAExD,MAAM,CAAC,KAAK,UAAU,YAAY;IAChC,MAAM,MAAM,GAAG,IAAI,WAAW,CAAC,GAAG,CAAC,CAAC;IACpC,MAAM,MAAM,CAAC,OAAO,EAAE,CAAC;IACvB,OAAO,MAAM,CAAC;AAChB,CAAC"}
