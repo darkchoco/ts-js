@@ -2,7 +2,14 @@
 
 <!-- ❷ 검색어 영역  -->
 <label for="search"></label>
-<input type="text" name="search" id="search" value="" size="50" placeholder="검색어를 입력하세요."/>
+<input type="text" name="search" id="search" value="{{search}}" size="50" placeholder="검색어를 입력하세요."/>
+<button onclick="{
+  const search = document.getElementById('search');
+  if (search instanceof HTMLInputElement) {
+    location.href = `/?search=${encodeURIComponent(search.value)}`;
+  }
+}">검색
+</button>
 <br/>
 
 <!-- ❸ 글쓰기 페이지 이동 링크  -->
@@ -21,24 +28,39 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td><a href="/detail/">타이틀</a></td>
-      <td>작성자이름</td>
-      <td>99999</td>
-      <td>2026.04.14</td>
-    </tr>
+    {{#each posts}}
+      <tr>
+        <td><a href="/detail/{{_id}}">{{title}}</a></td>
+        <td>{{writer}}</td>
+        <td>{{hits}}</td>
+        <td>{{dateString createdAt}}</td>
+      </tr>
+    {{/each}}
     </tbody>
   </table>
 </div>
 
 <!-- ❺ 페이징 영역  -->
 <div>
-  <a>&lt;&lt;</a>
-  <a>&lt;</a>
-  <a>1</a>
-  <a>2</a>
-  <a>3</a>
-  <a>4</a>
-  <a>&gt;</a>
-  <a>&gt;&gt;</a>
+  {{#with paginator}}
+    <a href="/?page=1&search={{@root.search}}">&lt;&lt;
+    {{#if hasPrev}}
+      <a href="/?page={{prevPage}}&search={{@root.search}}">&lt;
+    {{else}}
+      <a>&lt;</a>
+    {{/if}}
+    {{#each pageList}}
+      {{#if (eq this @root.paginator.page)}}
+        <a>{{.}}</a>
+      {{else}}
+        <a href="/?page={{.}}&search={{@root.search}}">{{.}}
+      {{/if}}
+    {{/each}}
+    {{#if hasNext}}
+      <a href="/?page={{nextPage}}&search={{@root.search}}">&gt;
+    {{else}}
+      <a>&gt;</a>
+    {{/if}}
+    <a href="/?page={{lastPage}}&search={{@root.search}}">&gt;&gt;
+  {{/with}}
 </div>
