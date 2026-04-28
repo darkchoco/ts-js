@@ -1,0 +1,35 @@
+@server = http://localhost:3000
+
+
+### 게시글 조회
+GET {{server}}/blog
+
+
+### 게시글 생성
+POST {{server}}/blog
+Content-Type: application/json
+
+{
+"title": "첫 글",
+"content": "블로그 첫 글",
+"name": "김수정"
+}
+
+
+### 특정 게시글 조회
+GET {{server}}/blog/1
+
+
+### 게시글 삭제
+DELETE {{server}}/blog/1
+
+
+### 게시글 수정
+PUT {{server}}/blog/1
+Content-Type: application/json
+
+{
+"title": "첫 글",
+"content": "너무 내용이 밋밋한 것 같아서...",
+"name": "Crystal"
+}
