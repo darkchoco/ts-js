@@ -1,9 +1,38 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8"/>
-  <title>게시판 프로젝트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>게시판</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'sans-serif'],
+            serif: ['"Noto Serif KR"', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
 </head>
-<body>
-{{{body}}}
+<body class="bg-white text-gray-800 font-sans min-h-screen flex flex-col">
+  <header class="border-b border-gray-200">
+    <div class="max-w-5xl mx-auto px-6 py-4">
+      <a href="/" class="font-serif text-2xl font-bold text-gray-900 hover:text-green-700 transition-colors">게시판</a>
+    </div>
+  </header>
+  <main class="flex-1 max-w-5xl mx-auto w-full px-6 py-12">
+    {{{body}}}
+  </main>
+  <footer class="border-t border-gray-100 mt-8">
+    <div class="max-w-5xl mx-auto px-6 py-6 text-center text-sm text-gray-400">
+      © 2026 게시판
+    </div>
+  </footer>
 </body>
 </html>

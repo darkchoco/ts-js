@@ -1,95 +1,92 @@
-<h1>{{title}}</h1>
-{{#with post}} <!-- post 객체를 쉽게 사용하도록 with로 감싸기 -->
-<h2 class="text-xl">{{title}}</h2> <!-- 제목 -->
-<div>
-  작성자 :<b>{{writer}}</b> <!-- 작성자 -->
-</div>
-<div>
-  조회수 : {{hits}} | 작성일시 : {{dateString createdAt}} <!-- 조회수 및 작성일 -->
-  <button onclick="modifyPost()">수정</button>
-  <button onclick="deletePost()">삭제</button>
-</div>
-
-<div>
-  <pre>{{content}}</pre> <!-- 본문 내용 -->
-</div>
-
-<section>
-  <div>
-    <h3>{{lengthOfList comments}}개의 댓글이 있습니다.</h3>
-  </div>
-
-  <form method="post" action="/write-comment">
-    <input type="hidden" name="id" value="{{_id}}"/>
-    <div>
-      <div>
-        <label>
-          <input type="text" name="name" placeholder="이름"/>
-        </label>
-        <label>
-          <input type="password" name="password" placeholder="비밀번호"/>
-        </label>
-      </div>
-      <div>
-        <label>
-          <textarea cols="40" rows="3" name="comment" placeholder="댓글을 입력해주세요."></textarea>
-        </label>
-        <br/><br/>
-        <button>댓글 쓰기</button>
+<article class="max-w-3xl mx-auto">
+  {{#with post}}
+  <header class="mb-8 pb-6 border-b border-gray-200">
+    <h1 class="font-serif text-4xl font-bold text-gray-900 leading-tight mb-4">{{title}}</h1>
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
+      <span class="font-medium text-gray-700">{{writer}}</span>
+      <span>조회 {{hits}}</span>
+      <span>{{dateString createdAt}}</span>
+      <div class="ml-auto flex gap-2">
+        <button onclick="modifyPost()"
+          class="px-4 py-1.5 text-sm border border-gray-300 rounded-lg hover:border-green-500 hover:text-green-600 transition-colors">수정</button>
+        <button onclick="deletePost()"
+          class="px-4 py-1.5 text-sm border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors">삭제</button>
       </div>
     </div>
-  </form>
-</section>
+  </header>
 
-<section>
-  {{#each comments}}
-    <div>
-      <div>
-        작성자 : <b>{{name}}</b>
-      </div>
-      <div>
-        작성일시 : {{dateString createdAt}}
-        <button onclick="deleteComment('{{idx}}')">삭제</button>
-      </div>
-    </div>
-    <div>
-      <pre>{{comment}}</pre>
-    </div>
-  {{/each}}
-</section>
-{{/with}}
+  <div class="text-gray-700 text-base leading-loose whitespace-pre-wrap mb-16">{{content}}</div>
 
-<footer>
-  <div>
-    <a href="/">목록으로</a>
-  </div>
-</footer>
+  <!-- 댓글 섹션 -->
+  <section aria-labelledby="comments-heading">
+    <h3 id="comments-heading" class="font-serif text-xl font-bold text-gray-800 mb-6">
+      댓글 {{lengthOfList comments}}개
+    </h3>
+
+    <form method="post" action="/write-comment" class="bg-gray-50 rounded-lg p-6 mb-8">
+      <input type="hidden" name="id" value="{{_id}}"/>
+      <div class="grid grid-cols-2 gap-3 mb-3">
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-gray-500">이름</span>
+          <input type="text" name="name" placeholder="이름"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"/>
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-gray-500">비밀번호</span>
+          <input type="password" name="password" placeholder="비밀번호"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"/>
+        </label>
+      </div>
+      <label class="flex flex-col gap-1 mb-4">
+        <span class="text-xs text-gray-500">댓글 내용</span>
+        <textarea name="comment" rows="3" placeholder="댓글을 입력해주세요."
+          class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"></textarea>
+      </label>
+      <div class="flex justify-end">
+        <button type="submit"
+          class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
+          댓글 쓰기
+        </button>
+      </div>
+    </form>
+
+    <div class="space-y-5">
+      {{#each comments}}
+      <div class="border-b border-gray-100 pb-5">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-3">
+            <span class="font-medium text-gray-800 text-sm">{{name}}</span>
+            <span class="text-xs text-gray-400">{{dateString createdAt}}</span>
+          </div>
+          <button onclick="deleteComment('{{idx}}')"
+            class="text-xs text-gray-400 hover:text-red-500 transition-colors">삭제</button>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{{comment}}</p>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+  {{/with}}
+</article>
+
+<div class="mt-12 pt-6 border-t border-gray-200 max-w-3xl mx-auto">
+  <a href="/" class="text-sm text-green-600 hover:text-green-700 transition-colors">← 목록으로</a>
+</div>
 
 <script>
   const postOption = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
   };
 
   async function modifyPost() {
     const password = prompt('패스워드를 입력해주세요');
-    // ❶ 프롬프트에서 취소를 누른 경우 처리 
-    if (!password) {
-      return;
-    }
-
-    // ❷ check-password API 실행 
+    if (!password) return;
     const result = await fetch('/check-password', {
       ...postOption,
       body: JSON.stringify({ id: "{{post._id}}", password })
     });
-
-    // ❸ json 함수를 실행하는 경우도 await를 해줘야 함 
     const data = await result.json();
-
-    // ❹ 패스워드가 맞는 경우 수정 페이지로 이동 
     if (data.isExist) {
       document.location = "/modify/{{post._id}}";
     } else {
@@ -99,53 +96,36 @@
 
   const deleteOption = {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
   };
 
   async function deletePost() {
-    const password = prompt('삭제하려면 패스워드를 입력해주세요'); // ❶ 프롬프트로 값 입력받기
-    // 프롬프트에서 취소를 누른 경우 처리 
-    if (!password) {
-      return;
-    }
-    const result = await fetch('/delete', {   // ❷ fetch API를 사용해 delete API를 호출 
+    const password = prompt('삭제하려면 패스워드를 입력해주세요');
+    if (!password) return;
+    const result = await fetch('/delete', {
       ...deleteOption,
       body: JSON.stringify({ id: "{{post._id}}", password })
     });
-
-    // ❸ delete API의 결과에 따라 다른 메시지 출력
     const data = await result.json();
     if (!data.isSuccess) {
       alert('삭제에 실패했습니다. 패스워드를 확인해주세요.');
       return;
     }
-
     document.location = '/';
   }
 
   async function deleteComment(idx) {
     const password = prompt('삭제하려면 패스워드를 입력해주세요');
-    // 프롬프트에서 취소를 누른 경우 처리 
-    if (!password) {
-      return;
-    }
-
-    // /delete-comment API 실행 
+    if (!password) return;
     const result = await fetch('/delete-comment', {
       ...deleteOption,
       body: JSON.stringify({ id: "{{post._id}}", idx, password })
     });
-
-    // 댓글 삭제 실패 시 메시지 띄우고 함수 실행 종료
     const data = await result.json();
     if (!data.isSuccess) {
       alert('삭제에 실패했습니다. 패스워드를 확인해주세요.');
       return;
     }
-
-    // 성공 시 메시지를 띄우고 화면 리프레시 
     alert('삭제 성공!');
     document.location.reload();
   }
